@@ -23,7 +23,7 @@ data "aws_ami" "ubuntu" {
 # Register existing SSH public key with AWS
 resource "aws_key_pair" "lab" {
   key_name   = "terraform-gitops-lab"
-  public_key = file(pathexpand("~/.ssh/id_ed25519.pub"))
+  public_key = file("${path.module}/keys/lab.pub")
 
   tags = {
     Name        = "terraform-gitops-lab"
