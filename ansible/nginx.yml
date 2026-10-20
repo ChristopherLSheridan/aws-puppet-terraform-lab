@@ -1,0 +1,34 @@
+---
+- name: Configure web servers
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Enable and start Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+        state: started
+
+    - name: Deploy homepage
+      ansible.builtin.copy:
+        dest: /var/www/html/index.html
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head><title>Terraform + Ansible Lab</title></head>
+          <body>
+            <h1>Infrastructure as Code Works!</h1>
+            <p>Provisioned with Terraform.</p>
+            <p>Configured with Ansible.</p>
+          </body>
+          </html>
+        owner: root
+        group: root
+        mode: '0644'
